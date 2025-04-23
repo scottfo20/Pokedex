@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private List<PokemonItem> pokemonList = new ArrayList<>();
     private PokeApiService apiService;
 
-
+    private int offset = 0;
+    private final int limit = 20;
+    private boolean isLoading = false;
+    private final int totalCount = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +62,42 @@ public class MainActivity extends AppCompatActivity {
         apiService = retrofit.create(PokeApiService.class);
 
         fetchPokemonList();
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
+                if (!isLoading && lastVisibleItem == totalItemCount - 1 && offset < totalCount) {
+                    fetchPokemonList();
+                }
+            }
+        });
     }
 
     private void fetchPokemonList() {
-        apiService.getPokemonList(20).enqueue(new Callback<PokemonListResponse>() {
+        isLoading = true;
+        apiService.getPokemonList(limit, offset).enqueue(new Callback<PokemonListResponse>() {
             @Override
             public void onResponse(Call<PokemonListResponse> call, Response<PokemonListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    pokemonList.clear();
-                    pokemonList.addAll(response.body().getResults());
+                    List<PokemonItem> newPokemons = response.body().getResults();
+                    pokemonList.addAll(newPokemons);
                     adapter.notifyDataSetChanged();
+                    offset += limit;
                     Log.d("MainActivity", "Pokémons cargados: " + pokemonList.size());
                 }
+                isLoading = false;
             }
 
             @Override
             public void onFailure(Call<PokemonListResponse> call, Throwable t) {
+                isLoading = false;
                 Toast.makeText(MainActivity.this, "Error al cargar Pokémon", Toast.LENGTH_SHORT).show();
             }
         });

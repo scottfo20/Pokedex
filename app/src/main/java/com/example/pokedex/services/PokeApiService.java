@@ -10,8 +10,13 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface PokeApiService {
+//    @GET("pokemon")
+//    Call<PokemonListResponse> getPokemonList(@Query("limit") int limit);
     @GET("pokemon")
-    Call<PokemonListResponse> getPokemonList(@Query("limit") int limit);
+    Call<PokemonListResponse> getPokemonList(
+            @Query("limit") int limit,
+            @Query("offset") int offset
+    );
 
     @GET
     Call<PokemonDetail> getPokemonDetail(@Url String url);
