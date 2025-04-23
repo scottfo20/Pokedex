@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private int offset = 0;
     private final int limit = 20;
     private boolean isLoading = false;
-    private final int totalCount = 150;
+    private final int totalCount = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

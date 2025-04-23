@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pokedex.R;
 import com.example.pokedex.models.PokemonItem;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pokemon, parent, false);
         return new ViewHolder(v);
     }
 
@@ -50,11 +51,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
         ViewHolder(View view) {
             super(view);
-            textView = view.findViewById(android.R.id.text1);
+            textView = view.findViewById(R.id.textViewPokemonName);
         }
     }
 }
