@@ -69,5 +69,25 @@
                 android:layout_gravity="center_horizontal" />
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/btnAddLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Añadir dirección"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnViewLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver ubicaciones"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white"/>
+
+
+
     </LinearLayout>
 </ScrollView>

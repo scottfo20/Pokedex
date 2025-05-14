@@ -1,16 +1,13 @@
 package com.example.pokedex;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.example.pokedex.models.PokemonDetail;
 import com.example.pokedex.services.PokeApiService;
 import com.squareup.picasso.Picasso;
@@ -21,9 +18,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.google.firebase.database.DatabaseReference;
+
+
 public class DetailActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView nameView, typesView;
+    private Button btnAddLocation, btnViewLocations;
+    private DatabaseReference databaseRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,10 @@ public class DetailActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         nameView = findViewById(R.id.nameView);
         typesView = findViewById(R.id.typesView);
+
+        btnAddLocation = findViewById(R.id.btnAddLocation);
+        btnViewLocations = findViewById(R.id.btnViewLocations);
+
 
         String url = getIntent().getStringExtra("url");
 
@@ -64,11 +71,24 @@ public class DetailActivity extends AppCompatActivity {
                 Toast.makeText(DetailActivity.this, "Error al cargar detalles", Toast.LENGTH_SHORT).show();
             }
         });
+
+        btnAddLocation.setOnClickListener(v -> {
+            String pokemonName = nameView.getText().toString().toLowerCase();
+            Intent intent = new Intent(DetailActivity.this, AddLocation.class);
+            intent.putExtra("pokemon_name", pokemonName);
+            startActivity(intent);
+        });
+
+        btnViewLocations.setOnClickListener(v -> {
+            String pokemonName = nameView.getText().toString().toLowerCase();
+            Intent intent = new Intent(DetailActivity.this, MapsActivity.class);
+            intent.putExtra("pokemon_name", pokemonName);
+            startActivity(intent);
+        });
+
     }
 
     private String capitalize(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
-
-
 }
