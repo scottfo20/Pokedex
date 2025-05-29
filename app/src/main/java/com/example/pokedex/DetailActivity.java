@@ -8,8 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.pokedex.models.PokemonDetail;
-import com.example.pokedex.services.PokeApiService;
+
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -18,77 +17,42 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import com.google.firebase.database.DatabaseReference;
-
 
 public class DetailActivity extends AppCompatActivity {
-    private ImageView imageView;
-    private TextView nameView, typesView;
-    private Button btnAddLocation, btnViewLocations;
-    private DatabaseReference databaseRef;
-
+    ImageView a; TextView b, c; Button d, e;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-
-        imageView = findViewById(R.id.imageView);
-        nameView = findViewById(R.id.nameView);
-        typesView = findViewById(R.id.typesView);
-
-        btnAddLocation = findViewById(R.id.btnAddLocation);
-        btnViewLocations = findViewById(R.id.btnViewLocations);
-
-
-        String url = getIntent().getStringExtra("url");
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        PokeApiService api = retrofit.create(PokeApiService.class);
-
-        api.getPokemonDetail(url).enqueue(new Callback<PokemonDetail>() {
-            @Override
-            public void onResponse(Call<PokemonDetail> call, Response<PokemonDetail> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    PokemonDetail p = response.body();
-                    nameView.setText(capitalize(p.getName()));
-                    Picasso.get().load(p.getSprites().front_default).into(imageView);
-
-                    StringBuilder types = new StringBuilder("Tipo: ");
-                    for (PokemonDetail.TypeSlot t : p.getTypes()) {
-                        types.append(capitalize(t.type.name)).append(" ");
+    protected void onCreate(Bundle f) {
+        super.onCreate(f); setContentView(R.layout.activity_detail);
+        a = findViewById(R.id.imageView); b = findViewById(R.id.nameView); c = findViewById(R.id.typesView);
+        d = findViewById(R.id.btnAddLocation); e = findViewById(R.id.btnViewLocations);
+        String g = getIntent().getStringExtra("url");
+        new Retrofit.Builder().baseUrl("https://pokeapi.co/api/v2/").addConverterFactory(GsonConverterFactory.create()).build()
+                .create(PokeApiService.class).getPokemonDetail(g).enqueue(new Callback<PokemonDetail>() {
+                    @Override
+                    public void onResponse(Call<PokemonDetail> h, Response<PokemonDetail> i) {
+                        if (i.isSuccessful() && i.body() != null) {
+                            PokemonDetail p = i.body(); b.setText(cap(p.getName()));
+                            Picasso.get().load(p.getSprites().front_default).into(a);
+                            StringBuilder sb = new StringBuilder("Tipo: ");
+                            for (PokemonDetail.TypeSlot t : p.getTypes()) sb.append(cap(t.type.name)).append(" ");
+                            c.setText(sb.toString().trim());
+                        }
                     }
-                    typesView.setText(types.toString().trim());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PokemonDetail> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, "Error al cargar detalles", Toast.LENGTH_SHORT).show();
-            }
+                    @Override
+                    public void onFailure(Call<PokemonDetail> h, Throwable t) {
+                        Toast.makeText(DetailActivity.this, "Error al cargar detalles", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        d.setOnClickListener(v -> {
+            Intent i = new Intent(this, AddLocation.class);
+            i.putExtra("pokemon_name", b.getText().toString().toLowerCase()); startActivity(i);
         });
-
-        btnAddLocation.setOnClickListener(v -> {
-            String pokemonName = nameView.getText().toString().toLowerCase();
-            Intent intent = new Intent(DetailActivity.this, AddLocation.class);
-            intent.putExtra("pokemon_name", pokemonName);
-            startActivity(intent);
+        e.setOnClickListener(v -> {
+            Intent i = new Intent(this, MapsActivity.class);
+            i.putExtra("pokemon_name", b.getText().toString().toLowerCase()); startActivity(i);
         });
-
-        btnViewLocations.setOnClickListener(v -> {
-            String pokemonName = nameView.getText().toString().toLowerCase();
-            Intent intent = new Intent(DetailActivity.this, MapsActivity.class);
-            intent.putExtra("pokemon_name", pokemonName);
-            startActivity(intent);
-        });
-
     }
 
-    private String capitalize(String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
+    private String cap(String s) { return s.substring(0,1).toUpperCase() + s.substring(1); }
 }

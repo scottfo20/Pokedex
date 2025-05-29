@@ -1,4 +1,4 @@
-package com.example.pokedex.models;
+package com.example.pokedex;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class PokemonDetail {
     public String getName() { return name; }
     public Sprites getSprites() { return sprites; }
     public List<TypeSlot> getTypes() { return types; }
-
+//sss
     public class Sprites {
         public String front_default;
     }
