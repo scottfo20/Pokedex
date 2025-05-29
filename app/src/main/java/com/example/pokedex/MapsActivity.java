@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.pokedex.models.PokemonLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.pokedex.databinding.ActivityMapsBinding;
-import com.google.common.collect.Maps;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (DataSnapshot locationSnap : snapshot.getChildren()) {
                     PokemonLocation loc = locationSnap.getValue(PokemonLocation.class);
                     if (loc != null) {
-                        LatLng point = new LatLng(loc.latitude, loc.longitude);
+                        LatLng point = new LatLng(loc.a, loc.b);
                         mMap.addMarker(new MarkerOptions().position(point).title("Ubicación"));
                         last = point;
                     }

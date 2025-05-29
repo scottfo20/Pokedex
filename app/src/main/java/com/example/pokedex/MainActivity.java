@@ -2,7 +2,6 @@ package com.example.pokedex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,11 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.pokedex.adapters.PokemonAdapter;
-import com.example.pokedex.models.PokemonItem;
-import com.example.pokedex.models.PokemonListResponse;
-import com.example.pokedex.services.PokeApiService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,84 +22,51 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private PokemonAdapter adapter;
-    private List<PokemonItem> pokemonList = new ArrayList<>();
-    private PokeApiService apiService;
-
-    private int offset = 0;
-    private final int limit = 20;
-    private boolean isLoading = false;
-    private final int totalCount = 300;
+    RecyclerView r; A a; List<PokemonItem> l = new ArrayList<>();
+    PokeApiService s; int o = 0, m = 20; boolean b = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+    protected void onCreate(Bundle z) {
+        super.onCreate(z); EdgeToEdge.enable(this); setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, in) -> {
+            Insets i = in.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(i.left, i.top, i.right, i.bottom); return in;
         });
-
-        recyclerView = findViewById(R.id.recyclerViewPokemons);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PokemonAdapter(pokemonList, this::onPokemonClicked);
-        recyclerView.setAdapter(adapter);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiService = retrofit.create(PokeApiService.class);
-
-        fetchPokemonList();
-
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalItemCount = layoutManager.getItemCount();
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
-                if (!isLoading && lastVisibleItem == totalItemCount - 1 && offset < totalCount) {
-                    fetchPokemonList();
-                }
+        r = findViewById(R.id.recyclerViewPokemons);
+        r.setLayoutManager(new LinearLayoutManager(this));
+        a = new A(l, this::q);
+        r.setAdapter(a);
+        s = new Retrofit.Builder().baseUrl("https://pokeapi.co/api/v2/").addConverterFactory(GsonConverterFactory.create()).build().create(PokeApiService.class);
+        z();
+        r.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            public void onScrolled(RecyclerView rv, int dx, int dy) {
+                LinearLayoutManager lm = (LinearLayoutManager) rv.getLayoutManager();
+                int t = lm.getItemCount(), p = lm.findLastVisibleItemPosition();
+                if (!b && p == t - 1 && o < 300) z();
             }
         });
     }
 
-    private void fetchPokemonList() {
-        isLoading = true;
-        apiService.getPokemonList(limit, offset).enqueue(new Callback<PokemonListResponse>() {
-            @Override
-            public void onResponse(Call<PokemonListResponse> call, Response<PokemonListResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<PokemonItem> newPokemons = response.body().getResults();
-                    pokemonList.addAll(newPokemons);
-                    adapter.notifyDataSetChanged();
-                    offset += limit;
-                    Log.d("MainActivity", "Pokémons cargados: " + pokemonList.size());
+    private void z() {
+        b = true;
+        s.getPokemonList(m, o).enqueue(new Callback<PokemonListResponse>() {
+            public void onResponse(Call<PokemonListResponse> call, Response<PokemonListResponse> res) {
+                if (res.isSuccessful() && res.body() != null) {
+                    l.addAll(res.body().getResults());
+                    a.notifyDataSetChanged(); o += m;
                 }
-                isLoading = false;
+                b = false;
             }
-
-            @Override
             public void onFailure(Call<PokemonListResponse> call, Throwable t) {
-                isLoading = false;
+                b = false;
                 Toast.makeText(MainActivity.this, "Error al cargar Pokémon", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void onPokemonClicked(PokemonItem item) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("url", item.getUrl());
-        startActivity(intent);
+    private void q(PokemonItem i) {
+        Intent in = new Intent(this, DetailActivity.class); in.putExtra("url", i.getUrl()); startActivity(in);
     }
 }
+
+
