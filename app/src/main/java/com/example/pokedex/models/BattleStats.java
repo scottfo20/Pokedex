@@ -5,6 +5,7 @@ public class BattleStats {
     private int defenses = 0;
     private int escapes = 0;
     private int heals = 0;
+    private int attackspecials = 0;
 
     public void incrementAttack() { attacks++; }
     public void incrementDefense() { defenses++; }

@@ -4,6 +4,7 @@ import com.example.pokedex.actions.AttackAction;
 import com.example.pokedex.actions.DefendAction;
 import com.example.pokedex.actions.HealAction;
 import com.example.pokedex.actions.RunAction;
+import com.example.pokedex.actions.SpecialattackAction;
 import com.example.pokedex.interfaces.PokemonAction;
 
 public class PokemonActionFactory {
@@ -17,6 +18,8 @@ public class PokemonActionFactory {
                 return new RunAction();
             case "heal":
                 return new HealAction();
+            case "special_attack":
+                return new SpecialattackAction();
             default:
                 throw new IllegalArgumentException("Acción no válida: " + actionType);
         }

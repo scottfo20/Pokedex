@@ -13,6 +13,7 @@ import com.example.pokedex.actions.AttackAction;
 import com.example.pokedex.actions.DefendAction;
 import com.example.pokedex.actions.HealAction;
 import com.example.pokedex.actions.RunAction;
+import com.example.pokedex.actions.SpecialattackAction;
 import com.example.pokedex.interfaces.ExportStrategy;
 import com.example.pokedex.interfaces.PokemonAction;
 import com.example.pokedex.models.BattleStats;
@@ -38,7 +39,7 @@ public class SimulateActivity extends AppCompatActivity {
     private PokemonAction action;
     private TextView tvResult, tvStats;
     private Map<String, PokemonAction> actions;
-    private Button btnAttack, btnDefend, btnRun, btnHeal, btnExport;
+    private Button btnAttack, btnDefend, btnRun, btnHeal, btnExport, btnSpecialAttack;
     Spinner spinnerExportFormat;
     private BattleStats battleStats = new BattleStats();
 
@@ -55,6 +56,7 @@ public class SimulateActivity extends AppCompatActivity {
         btnHeal = findViewById(R.id.btnHeal);
         tvStats = findViewById(R.id.tvStats);
         btnExport = findViewById(R.id.btnExport);
+        btnSpecialAttack = findViewById(R.id.btnSpecialAttack);
         spinnerExportFormat = findViewById(R.id.spinnerExportFormat);
 
 
@@ -64,6 +66,7 @@ public class SimulateActivity extends AppCompatActivity {
         btnDefend.setEnabled(false);
         btnRun.setEnabled(false);
         btnHeal.setEnabled(false);
+        btnSpecialAttack.setEnabled(false);
 
         String pokemonName = getIntent().getStringExtra("pokemon_name");
         if (pokemonName == null || pokemonName.isEmpty()) {
@@ -97,12 +100,14 @@ public class SimulateActivity extends AppCompatActivity {
                     btnDefend.setEnabled(true);
                     btnRun.setEnabled(true);
                     btnHeal.setEnabled(true);
+                    btnSpecialAttack.setEnabled(true);
 
                     actions = new HashMap<>();
                     actions.put("attack", new AttackAction());
                     actions.put("defend", new DefendAction());
                     actions.put("run", new RunAction());
                     actions.put("heal", new HealAction());
+                    actions.put(("special_attack"), new SpecialattackAction());
 
 
                     btnAttack.setOnClickListener(v -> {
@@ -130,6 +135,12 @@ public class SimulateActivity extends AppCompatActivity {
                         action = PokemonActionFactory.createAction("heal");
                         tvResult.setText(action.execute(pokemon));
                         updateStatsDisplay();
+                    });
+                    btnSpecialAttack.setOnClickListener(v -> {
+
+                        action = PokemonActionFactory.createAction("special_attack");
+                        tvResult.setText(action.execute(pokemon));
+
                     });
 
                 } else {

@@ -3,6 +3,8 @@ package com.example.pokedex.models;
 import java.util.List;
 
 public class PokemonDetail {
+    //SRP
+    //OCP: Se puede extender el modelo añadiendo más campos sin modificar el contrato existente (idealmente con herencia o composición).
     private int id;
     private String name;
     private Sprites sprites;

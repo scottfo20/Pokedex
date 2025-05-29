@@ -10,8 +10,7 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface PokeApiService {
-//    @GET("pokemon")
-//    Call<PokemonListResponse> getPokemonList(@Query("limit") int limit);
+    //DIP: La UI o lógica depende de esta interfaz (abstracción), no de implementaciones concretas.
     @GET("pokemon")
     Call<PokemonListResponse> getPokemonList(
             @Query("limit") int limit,

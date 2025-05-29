@@ -14,6 +14,8 @@ import com.example.pokedex.models.PokemonItem;
 import java.util.List;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
+    //SRP-DIP-OCP-DRY
+    //Inversión de dependencias: Al usar una interfaz para el click (OnPokemonClickListener) el adapter depende de abstracciones, no de implementaciones concretas.
     private List<PokemonItem> list;                    // Guarda la lista de Pokémons que se muestran.
     private View.OnClickListener onClick;              // Listener genérico para clicks (no se usa en el código final).
 

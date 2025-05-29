@@ -6,17 +6,42 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
     app:cardBackgroundColor="@android:color/white">
 
-    <TextView
-        android:id="@+id/textViewPokemonName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="16dp"
-        android:text="Bulbasaur"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black" />
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewPokemonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bulbasaur"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333" />
+
+            <TextView
+                android:id="@+id/textViewPokemonType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo: Planta / Veneno"
+                android:textSize="14sp"
+                android:textColor="#777777"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

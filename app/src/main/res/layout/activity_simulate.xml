@@ -1,78 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F4F4F4">
 
-    <TextView
-        android:id="@+id/tvStats"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Estadísticas del combate:"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:layout_marginTop="8dp"/>
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas del combate"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Resultado de la acción -->
-    <TextView
-        android:id="@+id/tvResult"
-        android:text="Acción del Pokémon:"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:layout_marginBottom="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <!-- Resultado en contenedor con fondo redondeado -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_white"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
 
-    <!-- Botón Atacar -->
-    <Button
-        android:id="@+id/btnAttack"
-        android:text="Atacar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Acción del Pokémon"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textStyle="italic"
+                android:textColor="#555555" />
+        </LinearLayout>
 
-    <!-- Botón Defender -->
-    <Button
-        android:id="@+id/btnDefend"
-        android:text="Defender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
+        <!-- Botones -->
+        <Button
+            android:id="@+id/btnAttack"
+            android:text="⚔️ Atacar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Botón Huir -->
-    <Button
-        android:id="@+id/btnRun"
-        android:text="Huir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
-    <!-- Botón curar-->
-    <Button
-        android:id="@+id/btnHeal"
-        android:text="Heal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
+        <Button
+            android:id="@+id/btnDefend"
+            android:text="🛡️ Defender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Spinner para seleccionar el formato de exportación -->
-    <Spinner
-        android:id="@+id/spinnerExportFormat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp" />
+        <Button
+            android:id="@+id/btnRun"
+            android:text="🏃‍♂️ Huir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Botón Exportar -->
-    <Button
-        android:id="@+id/btnExport"
-        android:text="Exportar Datos de Combate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnHeal"
+            android:text="💊 Curar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+        <Button
+            android:id="@+id/btnSpecialAttack"
+            android:text="💊 Ataque Especial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
+        <!-- Exportar -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exportar Datos"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="#333" />
 
+        <Spinner
+            android:id="@+id/spinnerExportFormat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnExport"
+            android:text="📤 Exportar Datos de Combate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>

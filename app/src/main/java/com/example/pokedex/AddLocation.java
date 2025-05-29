@@ -17,6 +17,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AddLocation extends AppCompatActivity {
 
+    //SRP: Maneja la UI para añadir ubicación y guarda datos en Firebase.
+    //DIP: Aquí se depende directamente de FirebaseDatabase (puede mejorarse para inyectar una abstracción, mejorando DIP).
+    //DRY: Validación clara y manejo de errores evita duplicación.
     private EditText editLatitude, editLongitude;
     private Button btnSaveLocation;
     private DatabaseReference databaseRef;
