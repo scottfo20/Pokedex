@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 public class DetailActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView nameView, typesView;
-    private Button btnAddLocation, btnViewLocations;
+    private Button btnAddLocation, btnViewLocations, btnSimulate;
     private DatabaseReference databaseRef;
 
 
@@ -39,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
 
         btnAddLocation = findViewById(R.id.btnAddLocation);
         btnViewLocations = findViewById(R.id.btnViewLocations);
+        btnSimulate = findViewById(R.id.btnSimulate);
+
 
 
         String url = getIntent().getStringExtra("url");
@@ -85,6 +87,15 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("pokemon_name", pokemonName);
             startActivity(intent);
         });
+
+        btnSimulate.setOnClickListener(v -> {
+            String pokemonName = nameView.getText().toString().toLowerCase();
+            Intent intent = new Intent(DetailActivity.this, SimulateActivity.class);
+            intent.putExtra("pokemon_name", pokemonName);
+            startActivity(intent);
+        });
+
+
 
     }
 
