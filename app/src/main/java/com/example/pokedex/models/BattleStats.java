@@ -11,11 +11,15 @@ public class BattleStats {
     public void incrementDefense() { defenses++; }
     public void incrementEscape() { escapes++; }
     public void incrementHeal() { heals++; }
+    public void incrementSpecAttack() { attackspecials++; }
+
 
     public int getAttacks() { return attacks; }
     public int getDefenses() { return defenses; }
     public int getEscapes() { return escapes; }
     public int getHeals() { return heals; }
+
+    public int getAttackspecials() { return attackspecials; }
 
     @Override
     public String toString() {
@@ -23,6 +27,7 @@ public class BattleStats {
                 "Ataques: " + attacks + "\n" +
                 "Defensas: " + defenses + "\n" +
                 "Intentos de escape: " + escapes + "\n" +
-                "Curaciones: " + heals;
+                "Curaciones: " + heals+ "\n" +
+                "Ataques expeciales:" + attackspecials;
     }
 }
