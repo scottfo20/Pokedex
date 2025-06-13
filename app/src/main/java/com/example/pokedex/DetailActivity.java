@@ -8,49 +8,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.pokedex.models.PokemonDetail;
 import com.example.pokedex.services.PokeApiService;
+import com.example.pokedex.services.RetrofitClient;
 import com.squareup.picasso.Picasso;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.google.firebase.database.DatabaseReference;
-
 
 public class DetailActivity extends AppCompatActivity {
+
     private ImageView imageView;
     private TextView nameView, typesView;
     private Button btnAddLocation, btnViewLocations, btnSimulate;
     private DatabaseReference databaseRef;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        imageView = findViewById(R.id.imageView);
-        nameView = findViewById(R.id.nameView);
-        typesView = findViewById(R.id.typesView);
-
-        btnAddLocation = findViewById(R.id.btnAddLocation);
-        btnViewLocations = findViewById(R.id.btnViewLocations);
-        btnSimulate = findViewById(R.id.btnSimulate);
-
-
+        initViews();
 
         String url = getIntent().getStringExtra("url");
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        PokeApiService api = retrofit.create(PokeApiService.class);
+        PokeApiService api = RetrofitClient.getInstance().create(PokeApiService.class);
 
         api.getPokemonDetail(url).enqueue(new Callback<PokemonDetail>() {
             @Override
@@ -59,12 +45,7 @@ public class DetailActivity extends AppCompatActivity {
                     PokemonDetail p = response.body();
                     nameView.setText(capitalize(p.getName()));
                     Picasso.get().load(p.getSprites().front_default).into(imageView);
-
-                    StringBuilder types = new StringBuilder("Tipo: ");
-                    for (PokemonDetail.TypeSlot t : p.getTypes()) {
-                        types.append(capitalize(t.type.name)).append(" ");
-                    }
-                    typesView.setText(types.toString().trim());
+                    typesView.setText(formatTypes(p.getTypes()));
                 }
             }
 
@@ -74,32 +55,37 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        btnAddLocation.setOnClickListener(v -> {
-            String pokemonName = nameView.getText().toString().toLowerCase();
-            Intent intent = new Intent(DetailActivity.this, AddLocation.class);
-            intent.putExtra("pokemon_name", pokemonName);
-            startActivity(intent);
-        });
+        btnAddLocation.setOnClickListener(v -> startActivityWithPokemonName(AddLocation.class));
+        btnViewLocations.setOnClickListener(v -> startActivityWithPokemonName(MapsActivity.class));
+        btnSimulate.setOnClickListener(v -> startActivityWithPokemonName(SimulateActivity.class));
+    }
 
-        btnViewLocations.setOnClickListener(v -> {
-            String pokemonName = nameView.getText().toString().toLowerCase();
-            Intent intent = new Intent(DetailActivity.this, MapsActivity.class);
-            intent.putExtra("pokemon_name", pokemonName);
-            startActivity(intent);
-        });
+    private void initViews() {
+        imageView = findViewById(R.id.imageView);
+        nameView = findViewById(R.id.nameView);
+        typesView = findViewById(R.id.typesView);
+        btnAddLocation = findViewById(R.id.btnAddLocation);
+        btnViewLocations = findViewById(R.id.btnViewLocations);
+        btnSimulate = findViewById(R.id.btnSimulate);
+    }
 
-        btnSimulate.setOnClickListener(v -> {
-            String pokemonName = nameView.getText().toString().toLowerCase();
-            Intent intent = new Intent(DetailActivity.this, SimulateActivity.class);
-            intent.putExtra("pokemon_name", pokemonName);
-            startActivity(intent);
-        });
-
-
-
+    private void startActivityWithPokemonName(Class<?> activityClass) {
+        String pokemonName = nameView.getText().toString().toLowerCase();
+        Intent intent = new Intent(DetailActivity.this, activityClass);
+        intent.putExtra("pokemon_name", pokemonName);
+        startActivity(intent);
     }
 
     private String capitalize(String s) {
+        if (s == null || s.isEmpty()) return "";
         return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    private String formatTypes(List<PokemonDetail.TypeSlot> typesList) {
+        StringBuilder types = new StringBuilder("Tipo: ");
+        for (PokemonDetail.TypeSlot t : typesList) {
+            types.append(capitalize(t.type.name)).append(" ");
+        }
+        return types.toString().trim();
     }
 }
