@@ -137,10 +137,10 @@ public class SimulateActivity extends AppCompatActivity {
                         updateStatsDisplay();
                     });
                     btnSpecialAttack.setOnClickListener(v -> {
-
+                        battleStats.incrementSpecAttack();
                         action = PokemonActionFactory.createAction("special_attack");
                         tvResult.setText(action.execute(pokemon));
-
+                        updateStatsDisplay();
                     });
 
                 } else {
@@ -179,7 +179,8 @@ public class SimulateActivity extends AppCompatActivity {
                     "• Ataques realizados: " + battleStats.getAttacks() + "\n" +
                     "• Defensas realizadas: " + battleStats.getDefenses() + "\n" +
                     "• Veces que huyó: " + battleStats.getEscapes() + "\n" +
-                    "• Veces que se curó: " + battleStats.getHeals() + "\n";
+                    "• Veces que se curó: " + battleStats.getHeals() + "\n"+
+                    "• Ataques especiales realizados: " + battleStats.getAttackspecials() + "\n";
 
             CombatExporter exporter = new CombatExporter(strategy);
             exporter.export("combate_" + System.currentTimeMillis(), content, this);
