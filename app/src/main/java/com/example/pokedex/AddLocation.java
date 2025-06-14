@@ -24,10 +24,13 @@ public class AddLocation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_location);
 
+        // ERROR INTRODUCIDO AQUÍ: Intentando encontrar las vistas antes de setContentView()
         editLatitude = findViewById(R.id.editLatitude);
         editLongitude = findViewById(R.id.editLongitude);
+
+        setContentView(R.layout.activity_add_location);
+
         btnSaveLocation = findViewById(R.id.btnSaveLocation);
 
         pokemonName = getIntent().getStringExtra("pokemon_name").toLowerCase();
@@ -44,7 +47,7 @@ public class AddLocation extends AppCompatActivity {
                     databaseRef.child(pokemonName).child(locationId).setValue(location)
                             .addOnSuccessListener(unused -> {
                                 Toast.makeText(this, "Ubicación guardada", Toast.LENGTH_SHORT).show();
-                                finish(); // ← vuelve a DetailActivity
+                                finish();
                             })
                             .addOnFailureListener(e ->
                                     Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show());
